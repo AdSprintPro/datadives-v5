@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#0a0a0b" />
+<title>Data Engineer Residency — Datadives</title>
+<meta name="description" content="12-week live residency to become a hire-ready Data Engineer. Cohort 04 · 10 seats · ₹49,999 early bird." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=JetBrains+Mono:wght@500;700&display=swap" />
+<style>
+:root{
+  --bg:#0d1117; --fg:#f2f4f7; --muted:#9aa4b2; --card:#151b24; --card2:#1a2130;
+  --border:rgba(255,255,255,.10); --border2:rgba(255,255,255,.18);
+  --primary:#c8f542; --primary-ink:#0d1117; --accent:#6ec6ff;
+  --success:#7ee0a7; --danger:#ff6b6b;
+  --radius:12px;
+}
+*{box-sizing:border-box;border-color:var(--border)}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+body{overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+.mono{font-family:'JetBrains Mono',ui-monospace,monospace}
+.container{width:100%;max-width:1120px;margin:0 auto;padding:0 20px}
+.muted{color:var(--muted)}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border:1px solid var(--border);border-radius:999px;font-size:11px;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);background:rgba(255,255,255,.02)}
+.chip .dot{width:6px;height:6px;border-radius:50%;background:var(--primary);box-shadow:0 0 12px var(--primary);animation:pulse 1.8s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 20px;border-radius:10px;font-weight:800;font-size:15px;cursor:pointer;border:1px solid transparent;transition:transform .15s ease, opacity .15s ease}
+.btn:hover{transform:translateY(-1px)}
+.btn-primary{background:var(--primary);color:var(--primary-ink)}
+.btn-ghost{background:transparent;color:var(--fg);border-color:var(--border2)}
+.btn-block{width:100%}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+/* grid background */
+.grid-bg{position:relative}
+.grid-bg::before{content:"";position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(to right,rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(to bottom,rgba(255,255,255,.04) 1px,transparent 1px);background-size:40px 40px;mask-image:linear-gradient(180deg,#000 20%,transparent 90%)}
+
+/* Top urgency bar */
+.urgency{position:sticky;top:0;z-index:50;background:#000;color:var(--primary);border-bottom:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:12px;padding:8px 12px;text-align:center;letter-spacing:.05em}
+.urgency b{color:#fff;font-weight:700}
+
+/* Nav */
+.nav{position:sticky;top:34px;z-index:40;backdrop-filter:blur(10px);background:rgba(13,17,23,.72);border-bottom:1px solid var(--border)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;max-width:1120px;margin:0 auto}
+.logo{display:flex;align-items:center;gap:8px;font-weight:900;font-size:16px}
+.logo .box{width:26px;height:26px;border-radius:6px;background:var(--primary);display:grid;place-items:center;color:var(--primary-ink);font-weight:900;font-family:'JetBrains Mono',monospace;font-size:13px}
+
+/* Sections */
+section{padding:56px 0;position:relative}
+h1,h2,h3{margin:0;letter-spacing:-.02em;line-height:1.05}
+h1{font-size:clamp(34px,7vw,56px);font-weight:900}
+h2{font-size:clamp(26px,5vw,40px);font-weight:900}
+h3{font-size:20px;font-weight:800}
+p{line-height:1.6}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.18em;color:var(--primary)}
+
+/* Hero */
+.hero .eyebrow{margin-bottom:14px}
+.hero h1 span.hl{background:linear-gradient(180deg,#fff,#c8f542);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .lead{color:var(--muted);font-size:17px;margin:18px 0 24px;max-width:640px}
+.hero-ctas{display:flex;flex-wrap:wrap;gap:10px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:16px;margin-top:22px;font-size:12px;color:var(--muted);font-family:'JetBrains Mono',monospace}
+.hero-meta span::before{content:"■";color:var(--primary);margin-right:6px;font-size:9px;vertical-align:middle}
+
+/* Marquee */
+.marquee{border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:#0a0e14;overflow:hidden;padding:14px 0}
+.marquee-track{display:flex;gap:56px;animation:marquee 28s linear infinite;white-space:nowrap;font-family:'JetBrains Mono',monospace;color:var(--muted);font-size:13px}
+.marquee-track span{opacity:.75}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* Cards / bento */
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px}
+.card-hi{background:linear-gradient(180deg,var(--card2),var(--card));border-color:var(--border2)}
+.grid{display:grid;gap:14px}
+.cols-2{grid-template-columns:1fr}
+.cols-3{grid-template-columns:1fr}
+@media(min-width:700px){.cols-2{grid-template-columns:1fr 1fr}.cols-3{grid-template-columns:repeat(3,1fr)}}
+.stat{font-size:38px;font-weight:900;color:var(--primary)}
+.stat-label{font-size:12px;color:var(--muted);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.1em;margin-top:6px}
+
+/* Problem vs promise */
+.split{display:grid;gap:14px;grid-template-columns:1fr}
+@media(min-width:800px){.split{grid-template-columns:1fr 1fr}}
+.col-bad{border-color:rgba(255,107,107,.35)}
+.col-bad h3{color:var(--danger)}
+.col-good{border-color:rgba(200,245,66,.35)}
+.col-good h3{color:var(--primary)}
+.li{display:flex;gap:10px;align-items:flex-start;padding:8px 0;font-size:14px;color:#dbe1ea}
+.li .ic{flex:0 0 18px;height:18px;border-radius:50%;display:grid;place-items:center;font-size:11px;margin-top:2px;font-weight:900}
+.li.bad .ic{background:rgba(255,107,107,.15);color:var(--danger)}
+.li.good .ic{background:rgba(200,245,66,.15);color:var(--primary)}
+
+/* Curriculum weeks */
+.week{border:1px solid var(--border);border-radius:12px;padding:16px;background:var(--card);position:relative}
+.week .wnum{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--primary);letter-spacing:.14em}
+.week h3{margin:6px 0 6px;font-size:16px}
+.week p{margin:0;color:var(--muted);font-size:13px}
+
+/* Architecture */
+.arch{background:#080b10;border:1px solid var(--border);border-radius:12px;padding:18px;font-family:'JetBrains Mono',monospace;color:#cfe;overflow-x:auto;white-space:pre;font-size:12.5px;line-height:1.7}
+.arch .k{color:var(--primary)}
+.arch .m{color:var(--accent)}
+
+/* Mentors */
+.mentor{display:flex;gap:12px;align-items:center;padding:12px;background:var(--card);border:1px solid var(--border);border-radius:12px}
+.mentor .av{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--accent));display:grid;place-items:center;color:var(--primary-ink);font-weight:900;font-family:'JetBrains Mono',monospace;flex-shrink:0}
+.mentor small{color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:11px}
+
+/* Testimonials */
+.quote{background:var(--card);border:1px solid var(--border);border-left:3px solid var(--primary);border-radius:12px;padding:18px}
+.quote p{margin:0 0 12px;font-size:15px;color:#e6ebf3}
+.quote .who{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:12px;font-family:'JetBrains Mono',monospace}
+
+/* Pricing */
+.price-wrap{background:linear-gradient(180deg,#1a2230,#0f141c);border:1px solid var(--border2);border-radius:16px;padding:28px;position:relative;overflow:hidden}
+.price-wrap::before{content:"";position:absolute;inset:-1px;background:conic-gradient(from 210deg,transparent,var(--primary),transparent 30%);opacity:.25;filter:blur(20px);z-index:0}
+.price-wrap>*{position:relative;z-index:1}
+.price-old{color:var(--muted);text-decoration:line-through;font-family:'JetBrains Mono',monospace;font-size:14px}
+.price{font-size:52px;font-weight:900;color:var(--primary);letter-spacing:-.03em}
+.price small{font-size:14px;color:var(--muted);font-weight:600}
+.perks{list-style:none;padding:0;margin:16px 0}
+.perks li{padding:8px 0;border-top:1px dashed var(--border);color:#dbe1ea;font-size:14px;display:flex;gap:10px}
+.perks li:first-child{border-top:0}
+.perks li::before{content:"✓";color:var(--primary);font-weight:900}
+
+/* FAQ */
+details{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:0 16px;margin-bottom:10px}
+details summary{cursor:pointer;padding:16px 0;font-weight:700;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px}
+details summary::-webkit-details-marker{display:none}
+details summary::after{content:"+";color:var(--primary);font-size:22px;font-family:'JetBrains Mono',monospace}
+details[open] summary::after{content:"−"}
+details p{margin:0 0 16px;color:var(--muted);font-size:14px}
+
+/* Footer sticky CTA (mobile) */
+.sticky-cta{position:fixed;bottom:0;left:0;right:0;z-index:45;padding:10px 12px;background:rgba(13,17,23,.92);backdrop-filter:blur(10px);border-top:1px solid var(--border);display:flex;gap:8px;align-items:center}
+.sticky-cta .txt{flex:1;font-size:12px}
+.sticky-cta .txt b{color:var(--primary);font-family:'JetBrains Mono',monospace}
+@media(min-width:900px){.sticky-cta{display:none}}
+body{padding-bottom:76px}
+@media(min-width:900px){body{padding-bottom:0}}
+
+/* Footer */
+footer{padding:36px 0;border-top:1px solid var(--border);color:var(--muted);font-size:13px;text-align:center}
+
+/* Modal */
+.overlay{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);display:none;align-items:flex-end;justify-content:center;padding:0}
+.overlay.open{display:flex}
+@media(min-width:640px){.overlay{align-items:center;padding:20px}}
+.modal{width:100%;max-width:520px;background:var(--card);border:1px solid var(--border);border-radius:16px 16px 0 0;max-height:92vh;display:flex;flex-direction:column;overflow:hidden}
+@media(min-width:640px){.modal{border-radius:16px}}
+.m-head{padding:18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:12px}
+.m-head h3{font-size:16px}
+.m-close{width:34px;height:34px;border-radius:50%;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;font-size:18px}
+.m-body{padding:18px;overflow-y:auto;flex:1}
+.m-foot{padding:14px 18px;border-top:1px solid var(--border);display:flex;gap:10px;justify-content:space-between;align-items:center}
+.progress{display:flex;gap:6px;padding:14px 18px 0}
+.progress div{flex:1;height:4px;border-radius:99px;background:var(--border)}
+.progress div.on{background:var(--primary)}
+.field{display:block;margin-bottom:14px}
+.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}
+.field input{width:100%;background:var(--bg);border:1px solid var(--border2);border-radius:8px;padding:12px 14px;color:var(--fg);font-size:15px;font-family:inherit}
+.field input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(200,245,66,.15)}
+.choices{display:grid;gap:8px;margin-bottom:16px}
+.choice{text-align:left;background:var(--bg);border:1px solid var(--border2);color:var(--fg);padding:12px 14px;border-radius:8px;font-size:14px;cursor:pointer;font-family:inherit;transition:all .15s}
+.choice:hover{border-color:var(--primary)}
+.choice.active{border-color:var(--primary);background:rgba(200,245,66,.1)}
+.q-label{font-size:13px;color:var(--muted);margin:0 0 8px}
+.trust-box{display:flex;gap:10px;padding:12px;border:1px solid rgba(200,245,66,.3);background:rgba(200,245,66,.05);border-radius:10px;font-size:12px;color:var(--muted);margin-bottom:16px}
+.done{text-align:center;padding:24px 8px}
+.done .check{width:64px;height:64px;border-radius:50%;background:rgba(200,245,66,.15);color:var(--primary);display:grid;place-items:center;margin:0 auto 16px;font-size:32px}
+
+/* icons via CSS masks alternative: use inline SVG in HTML */
+.svgi{width:18px;height:18px;flex-shrink:0}
+.spinner{width:16px;height:16px;border:2px solid rgba(0,0,0,.3);border-top-color:var(--primary-ink);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<!-- Meta Pixel -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','1378486190820877');
+fbq('track','PageView');
+fbq('trackCustom','LandingLoaded',{page:'residency-html'});
+function track(e,p){try{window.fbq&&fbq('track',e,p||{})}catch(_){}}
+function trackC(e,p){try{window.fbq&&fbq('trackCustom',e,p||{})}catch(_){}}
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1378486190820877&ev=PageView&noscript=1"/></noscript>
+
+<!-- URGENCY BAR -->
+<div class="urgency">
+  <b>Cohort 04</b> starts soon · <b id="seats">10 seats</b> left · Early bird ends <span id="countdown" class="mono">--:--:--</span>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+  <div class="nav-inner">
+    <div class="logo">
+      <div class="box">D</div><span>Datadives</span>
+    </div>
+    <button class="btn btn-primary" style="padding:9px 14px;font-size:13px" onclick="openLead('nav')">Apply now</button>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero grid-bg">
+  <div class="container">
+    <div class="chip"><span class="dot"></span>Live residency · Cohort 04</div>
+    <h1 style="margin-top:16px">Become a <span class="hl">Data Engineer</span> companies actually fight over.</h1>
+    <p class="lead">A 12-week live residency to ship production-grade data pipelines with Kafka, Spark, Airflow &amp; Snowflake — mentored by engineers from Amazon, Microsoft &amp; Razorpay.</p>
+    <div class="hero-ctas">
+      <button class="btn btn-primary" onclick="openLead('hero')">
+        Reserve my seat
+        <svg class="svgi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </button>
+      <a class="btn btn-ghost" href="#curriculum">See the curriculum</a>
+    </div>
+    <div class="hero-meta">
+      <span>12 weeks · live</span><span>10 seats only</span><span>Placement support</span><span>EMI available</span>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee">
+  <div class="marquee-track">
+    <span>Amazon</span><span>Microsoft</span><span>Razorpay</span><span>Swiggy</span><span>Flipkart</span><span>PhonePe</span><span>Zomato</span><span>Meesho</span><span>Cred</span><span>Zeta</span>
+    <span>Amazon</span><span>Microsoft</span><span>Razorpay</span><span>Swiggy</span><span>Flipkart</span><span>PhonePe</span><span>Zomato</span><span>Meesho</span><span>Cred</span><span>Zeta</span>
+  </div>
+</div>
+
+<!-- PROBLEM -->
+<section>
+  <div class="container">
+    <div class="eyebrow">The gap</div>
+    <h2 style="margin-top:8px">Certificates don't get you hired. Portfolios do.</h2>
+    <p class="muted" style="max-width:640px">Most "data engineering" courses teach you SQL and slap a PDF on your LinkedIn. Companies still ask: <em>"show me a pipeline you shipped."</em> You don't have one. That ends here.</p>
+    <div class="split" style="margin-top:22px">
+      <div class="card col-bad">
+        <h3>Typical bootcamp</h3>
+        <div class="li bad"><span class="ic">×</span><span>Recorded videos, no feedback loop</span></div>
+        <div class="li bad"><span class="ic">×</span><span>Toy datasets nobody uses at work</span></div>
+        <div class="li bad"><span class="ic">×</span><span>Zero mentor calls, generic assignments</span></div>
+        <div class="li bad"><span class="ic">×</span><span>Certificate → still no interviews</span></div>
+      </div>
+      <div class="card col-good">
+        <h3>Datadives residency</h3>
+        <div class="li good"><span class="ic">✓</span><span>Live sessions with senior engineers</span></div>
+        <div class="li good"><span class="ic">✓</span><span>Real production-scale datasets</span></div>
+        <div class="li good"><span class="ic">✓</span><span>1:5 mentor ratio, weekly 1-on-1s</span></div>
+        <div class="li good"><span class="ic">✓</span><span>Portfolio → referrals → offers</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section style="padding-top:0">
+  <div class="container">
+    <div class="grid cols-3">
+      <div class="card card-hi" style="text-align:center">
+        <div class="stat">92%</div><div class="stat-label">Placement rate (C-01/02/03)</div>
+      </div>
+      <div class="card card-hi" style="text-align:center">
+        <div class="stat">₹14.8L</div><div class="stat-label">Average CTC post-program</div>
+      </div>
+      <div class="card card-hi" style="text-align:center">
+        <div class="stat">73</div><div class="stat-label">Engineers placed since 2023</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CURRICULUM -->
+<section id="curriculum" class="grid-bg">
+  <div class="container">
+    <div class="eyebrow">The 12-week map</div>
+    <h2 style="margin-top:8px">Every week you ship something a company would actually pay for.</h2>
+    <div class="grid cols-3" style="margin-top:22px">
+      <div class="week"><div class="wnum">WEEK 01–02</div><h3>SQL &amp; warehousing at scale</h3><p>Window functions, query optimization, star vs snowflake, Redshift/Snowflake internals.</p></div>
+      <div class="week"><div class="wnum">WEEK 03–04</div><h3>Python for data engineering</h3><p>Pandas, PySpark fundamentals, testing, packaging, CI for data code.</p></div>
+      <div class="week"><div class="wnum">WEEK 05–06</div><h3>Batch pipelines with Spark</h3><p>DataFrames, partitioning, shuffle tuning, running Spark on EMR/Databricks.</p></div>
+      <div class="week"><div class="wnum">WEEK 07–08</div><h3>Streaming with Kafka</h3><p>Producers, consumers, schema registry, exactly-once semantics, DLQ patterns.</p></div>
+      <div class="week"><div class="wnum">WEEK 09–10</div><h3>Orchestration with Airflow</h3><p>DAG design, SLAs, backfills, sensors, deploying Airflow on Kubernetes.</p></div>
+      <div class="week"><div class="wnum">WEEK 11–12</div><h3>Capstone + interviews</h3><p>Ship a real-time analytics pipeline. System design mocks. Referral push.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CAPSTONE ARCH -->
+<section>
+  <div class="container">
+    <div class="eyebrow">Capstone architecture</div>
+    <h2 style="margin-top:8px">Build a real-time order analytics pipeline.</h2>
+    <p class="muted" style="max-width:640px">This is the kind of system you'd design at a Series B startup. You'll ship it, deploy it, and defend it in a mock interview.</p>
+    <div class="arch" style="margin-top:20px">
+<span class="m">[ Order events ]</span>
+        ↓
+<span class="k">Kafka</span>  ──►  <span class="k">Spark Streaming</span>  ──►  <span class="k">Snowflake</span>
+        │                    │                     │
+        ▼                    ▼                     ▼
+   Schema Registry     Aggregations         BI / Dashboards
+        │                    │
+        └──── orchestrated by <span class="k">Airflow</span> ────┘
+                    │
+              <span class="m">Great Expectations</span> (data quality)
+    </div>
+  </div>
+</section>
+
+<!-- MENTORS -->
+<section>
+  <div class="container">
+    <div class="eyebrow">Your mentors</div>
+    <h2 style="margin-top:8px">Learn from people who ship at scale — not YouTube stars.</h2>
+    <div class="grid cols-2" style="margin-top:22px">
+      <div class="mentor"><div class="av">RS</div><div><b>Rohan S.</b><br><small>Senior DE · Amazon</small></div></div>
+      <div class="mentor"><div class="av">AK</div><div><b>Ankita K.</b><br><small>Data Platform · Razorpay</small></div></div>
+      <div class="mentor"><div class="av">VM</div><div><b>Varun M.</b><br><small>Staff Engineer · Microsoft</small></div></div>
+      <div class="mentor"><div class="av">PN</div><div><b>Priya N.</b><br><small>Analytics Eng · Swiggy</small></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="grid-bg">
+  <div class="container">
+    <div class="eyebrow">What residents say</div>
+    <h2 style="margin-top:8px">Real engineers. Real offers.</h2>
+    <div class="grid cols-2" style="margin-top:22px">
+      <div class="quote">
+        <p>"I came in writing basic SQL. 12 weeks later I was debugging a Kafka consumer lag issue on-call. Got two offers in the fourth week after the program."</p>
+        <div class="who"><div class="av mentor" style="width:32px;height:32px;font-size:12px"><div class="av" style="width:32px;height:32px;font-size:12px">SM</div></div>Sneha M. · DE at PhonePe · ₹18L</div>
+      </div>
+      <div class="quote">
+        <p>"The mentor calls are the whole thing. My mentor literally reviewed my system design answers before my Flipkart interview. That's unheard of."</p>
+        <div class="who"><div class="av mentor" style="width:32px;height:32px;font-size:12px"><div class="av" style="width:32px;height:32px;font-size:12px">AR</div></div>Aditya R. · DE at Flipkart · ₹16L</div>
+      </div>
+      <div class="quote">
+        <p>"I'd done three online courses before. None of them made me build real pipelines. This one did. And I could actually talk about my work in interviews."</p>
+        <div class="who"><div class="av mentor" style="width:32px;height:32px;font-size:12px"><div class="av" style="width:32px;height:32px;font-size:12px">KV</div></div>Karan V. · Analytics Eng · Meesho</div>
+      </div>
+      <div class="quote">
+        <p>"Switched from a manual QA job to a data engineering role at a fintech. The residency's 1:1s literally rebuilt my resume and my confidence."</p>
+        <div class="who"><div class="av mentor" style="width:32px;height:32px;font-size:12px"><div class="av" style="width:32px;height:32px;font-size:12px">NP</div></div>Neha P. · DE at Zeta · ₹13L</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="container">
+    <div class="price-wrap">
+      <div class="eyebrow">Investment</div>
+      <div style="display:flex;align-items:baseline;gap:12px;margin-top:8px;flex-wrap:wrap">
+        <div class="price-old">₹79,999</div>
+        <div class="price">₹49,999 <small>early bird</small></div>
+      </div>
+      <p class="muted" style="margin:6px 0 0">EMI from ₹4,166/mo · Employer sponsorship accepted</p>
+      <ul class="perks">
+        <li>12 weeks of live sessions with senior engineers</li>
+        <li>Weekly 1-on-1 mentor calls (1:5 ratio)</li>
+        <li>Real production datasets &amp; capstone project</li>
+        <li>Resume rebuild + mock interviews + referrals</li>
+        <li>Lifetime access to alumni Slack + job board</li>
+        <li>7-day money-back guarantee</li>
+      </ul>
+      <button class="btn btn-primary btn-block" style="padding:16px;margin-top:8px" onclick="openLead('pricing')">
+        Apply for Cohort 04
+        <svg class="svgi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </button>
+      <p class="mono muted" style="text-align:center;margin:12px 0 0;font-size:11px">Application review · WhatsApp within 4 hours · No cold calls</p>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section>
+  <div class="container">
+    <div class="eyebrow">Common questions</div>
+    <h2 style="margin-top:8px">The stuff people ask us on WhatsApp.</h2>
+    <div style="margin-top:22px">
+      <details><summary>I have zero coding experience. Can I still join?</summary><p>We take a small number of complete beginners in each cohort — but you have to be genuinely committed to putting in ~15 hrs/week. If you're picking this as a "let me try" thing, please don't apply.</p></details>
+      <details><summary>Is this really live, or pre-recorded?</summary><p>100% live. Sessions are 3 evenings a week + weekend labs. Recordings are available if you miss a session, but they're a backup, not the format.</p></details>
+      <details><summary>Do you guarantee a job?</summary><p>No one honest does. We guarantee placement <em>support</em>: referrals, mock interviews, resume rebuild, and a network of hiring partners. Our cohorts have averaged 92% placement in 4 months.</p></details>
+      <details><summary>What if I can't afford ₹49,999 upfront?</summary><p>We offer 3, 6, and 12-month EMI options via our finance partner. Employer/family sponsorship is also common — we'll send an official invoice.</p></details>
+      <details><summary>What if it's not for me?</summary><p>7-day money-back — no questions asked. If you attend the first week and it's not what you expected, full refund.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="grid-bg" style="text-align:center">
+  <div class="container">
+    <h2>10 seats. One shot. Cohort 04 closes soon.</h2>
+    <p class="muted" style="max-width:520px;margin:14px auto 22px">If you're serious about data engineering as a career — not a certificate — this is the program.</p>
+    <button class="btn btn-primary" style="padding:16px 28px;font-size:16px" onclick="openLead('final')">
+      Reserve my seat
+      <svg class="svgi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </button>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="logo" style="justify-content:center;margin-bottom:10px"><div class="box">D</div><span>Datadives</span></div>
+    <p>© 2026 Datadives · Built for engineers who ship.</p>
+  </div>
+</footer>
+
+<!-- STICKY MOBILE CTA -->
+<div class="sticky-cta">
+  <div class="txt">Cohort 04 · <b>10 seats</b> · ₹49,999</div>
+  <button class="btn btn-primary" style="padding:10px 16px;font-size:14px" onclick="openLead('sticky')">Apply</button>
+</div>
+
+<!-- LEAD MODAL -->
+<div class="overlay" id="overlay" onclick="if(event.target===this)closeLead()">
+  <div class="modal">
+    <div class="m-head">
+      <div>
+        <div class="mono" style="font-size:10px;letter-spacing:.14em;color:var(--primary);text-transform:uppercase">Cohort 04 · 10 seats</div>
+        <h3 id="mtitle" style="margin-top:4px">Reserve your seat</h3>
+      </div>
+      <button class="m-close" onclick="closeLead()">×</button>
+    </div>
+    <div class="progress" id="progress"><div class="on"></div><div></div><div></div></div>
+    <p class="mono muted" id="stepinfo" style="padding:8px 18px 0;font-size:11px">Step 1 of 3 · Your details · ~60s left</p>
+    <div class="m-body" id="mbody"></div>
+    <div class="m-foot" id="mfoot">
+      <button class="btn btn-ghost" id="backBtn" onclick="prevStep()" style="padding:10px 14px;font-size:13px" disabled>← Back</button>
+      <button class="btn btn-primary" id="nextBtn" onclick="nextStep()">Continue →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* -------- Countdown -------- */
+function tickCountdown(){
+  const el = document.getElementById('countdown');
+  const now = new Date();
+  const target = new Date(now); target.setDate(now.getDate() + (7 - now.getDay())); target.setHours(23,59,59,0);
+  let s = Math.max(0, Math.floor((target-now)/1000));
+  const d = Math.floor(s/86400); s-=d*86400;
+  const h = Math.floor(s/3600); s-=h*3600;
+  const m = Math.floor(s/60); s-=m*60;
+  el.textContent = `${d}d ${String(h).padStart(2,'0')}h ${String(m).padStart(2,'0')}m ${String(s).padStart(2,'0')}s`;
+}
+setInterval(tickCountdown,1000); tickCountdown();
+
+/* -------- UTM -------- */
+function readUtm(){
+  const p = new URLSearchParams(location.search); const o={};
+  ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','fbclid'].forEach(k=>{const v=p.get(k); if(v)o[k]=v});
+  return o;
+}
+
+/* -------- Lead form state -------- */
+const empty = {name:'',email:'',phone:'',city:'',background:'',experience:'',timeline:'',goal:'',budget:'',serious:''};
+let data = {...empty}, step = 0, done = false, submitting = false, ctx = 'hero', reached = 0;
+
+function openLead(source){
+  ctx = source||'hero'; step=0; data={...empty}; done=false; reached=0;
+  track('InitiateCheckout',{content_name:'Lead Form', source:ctx});
+  trackC('LeadFormOpen',{source:ctx});
+  document.getElementById('overlay').classList.add('open');
+  document.body.style.overflow='hidden';
+  render();
+}
+function closeLead(){
+  document.getElementById('overlay').classList.remove('open');
+  document.body.style.overflow='';
+  if(!done && step>=0){ trackC('LeadFormAbandon',{source:ctx,last_step:reached+1}); }
+}
+function prevStep(){ if(step>0){step--;render();} }
+function nextStep(){
+  if(!canNext()) return;
+  if(step<2){ step++; if(step>reached){reached=step; trackC('LeadFormStep',{step:step+1,source:ctx}); if(step===2)trackC('LeadFormQualified',{source:ctx});} render(); }
+  else submit();
+}
+function canNext(){
+  if(step===0) return data.name.trim().length>=2 && /\S+@\S+\.\S+/.test(data.email) && data.phone.replace(/\D/g,'').length>=10;
+  if(step===1) return !!data.background && !!data.experience && !!data.timeline;
+  if(step===2) return !!data.goal && !!data.budget && !!data.serious;
+  return true;
+}
+function upd(k,v){ data[k]=v; document.getElementById('nextBtn').disabled = !canNext(); document.querySelectorAll(`[data-group="${k}"] .choice`).forEach(b=>b.classList.toggle('active', b.dataset.value===v)); }
+function bindInput(id,k){ document.getElementById(id).addEventListener('input', e=>{ data[k]=e.target.value; document.getElementById('nextBtn').disabled=!canNext(); }); }
+
+function render(){
+  const body = document.getElementById('mbody');
+  const stepinfo = document.getElementById('stepinfo');
+  const progress = document.getElementById('progress');
+  const back = document.getElementById('backBtn');
+  const next = document.getElementById('nextBtn');
+  const foot = document.getElementById('mfoot');
+  const title = document.getElementById('mtitle');
+
+  if(done){
+    title.textContent = 'Application received';
+    stepinfo.style.display='none'; progress.style.display='none'; foot.style.display='none';
+    body.innerHTML = `<div class="done"><div class="check">✓</div><h3>You're on the shortlist.</h3><p class="muted" style="margin-top:10px">Our admissions lead will WhatsApp you within 4 working hours. Keep <b style="color:var(--fg)">${escapeHtml(data.phone)}</b> handy.</p><button class="btn btn-primary" style="margin-top:20px" onclick="closeLead()">Got it</button></div>`;
+    return;
+  }
+  progress.style.display='flex'; stepinfo.style.display='block'; foot.style.display='flex';
+  [...progress.children].forEach((d,i)=>d.classList.toggle('on', i<=step));
+  const titles = ['Your details','About you','Fit &amp; intent'];
+  stepinfo.innerHTML = `Step ${step+1} of 3 · ${titles[step]} · ~${60-step*20}s left`;
+  back.disabled = step===0;
+  next.innerHTML = step<2 ? 'Continue →' : '🔒 Reserve my seat';
+
+  if(step===0){
+    body.innerHTML = `
+      <div class="trust-box">
+        <svg class="svgi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--primary)"><path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z"/></svg>
+        <span>Takes 60 seconds. We'll review and WhatsApp you within 4 hours — no cold calls.</span>
+      </div>
+      <div class="field"><label>Full name</label><input id="fname" placeholder="Your name" value="${escapeHtml(data.name)}" autofocus /></div>
+      <div class="field"><label>WhatsApp number</label><input id="fphone" type="tel" inputmode="tel" placeholder="+91 98xxxxxxxx" value="${escapeHtml(data.phone)}" /></div>
+      <div class="field"><label>Email</label><input id="femail" type="email" inputmode="email" placeholder="you@example.com" value="${escapeHtml(data.email)}" /></div>
+      <div class="field"><label>City (optional)</label><input id="fcity" placeholder="Bengaluru, Pune, remote..." value="${escapeHtml(data.city)}" /></div>
+    `;
+    bindInput('fname','name'); bindInput('fphone','phone'); bindInput('femail','email'); bindInput('fcity','city');
+  } else if(step===1){
+    body.innerHTML = choiceGroup('Where are you right now?','background',['Engineering student','Recent graduate','Working professional (tech)','Working professional (non-tech)','Switching from another field'])
+      + choiceGroup('Programming / SQL experience','experience',['Absolute beginner','0–1 years','1–3 years','3–5 years','5+ years'])
+      + choiceGroup('How soon can you start?','timeline',['Immediately — next batch','Within 30 days','1–2 months','Just exploring']);
+    bindChoices();
+  } else {
+    body.innerHTML = choiceGroup("What's the outcome you want in 6 months?",'goal',['Land my first data engineering job','Switch from current role into data eng','Get promoted / raise at current job','Freelance / consulting work'])
+      + choiceGroup('Program fee is ₹49,999 (early bird). Are you able to invest?','budget',['Yes — ready to enrol if selected','Yes — need EMI / instalments','Employer / family will sponsor','Not sure yet'])
+      + choiceGroup('How serious are you about the residency?','serious',['Very — pick me','Serious — need to see the plan','Just curious'])
+      + `<div class="trust-box"><svg class="svgi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--primary)"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><span>Your details stay with our admissions team. No spam, no reselling — ever.</span></div>`;
+    bindChoices();
+  }
+  next.disabled = !canNext();
+}
+function choiceGroup(label,key,opts){
+  return `<div data-group="${key}"><p class="q-label">${label}</p><div class="choices">${opts.map(o=>`<button class="choice ${data[key]===o?'active':''}" data-key="${key}" data-value="${escapeHtml(o)}">${o}</button>`).join('')}</div></div>`;
+}
+function bindChoices(){
+  document.querySelectorAll('.choice').forEach(b=>b.addEventListener('click', ()=>upd(b.dataset.key, b.dataset.value)));
+}
+function escapeHtml(s){return String(s||'').replace(/[&<>"']/g,c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]))}
+
+/* -------- SUBMIT -------- */
+// TODO: Replace this with your Google Apps Script Web App URL (see setup instructions).
+const LEAD_ENDPOINT = 'REPLACE_WITH_YOUR_GOOGLE_APPS_SCRIPT_URL';
+
+async function submit(){
+  if(submitting) return; submitting=true;
+  const btn = document.getElementById('nextBtn'); btn.disabled=true; btn.innerHTML='<span class="spinner"></span> Submitting...';
+  const payload = { ...data, program:'Data Engineer Residency', source:ctx, utm:readUtm(), ts:new Date().toISOString() };
+  try{
+    if(LEAD_ENDPOINT && LEAD_ENDPOINT.startsWith('http')){
+      await fetch(LEAD_ENDPOINT, { method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify(payload) });
+    }
+    const value = 49999;
+    let intent = 1;
+    if(data.budget?.startsWith('Yes')) intent += 30000;
+    if(data.serious?.startsWith('Very')) intent += 15000;
+    if(data.timeline?.startsWith('Immediately')) intent += 5000;
+    track('Lead',{content_name:'Data Engineer Residency', value, currency:'INR', source:ctx});
+    track('SubmitApplication',{content_name:'Data Engineer Residency', value, currency:'INR'});
+    trackC('HighIntentLead',{source:ctx, intent_score:intent, budget:data.budget, serious:data.serious, timeline:data.timeline});
+    done=true; render();
+  }catch(e){
+    console.error(e); trackC('LeadFormError',{source:ctx});
+    alert("Couldn't submit right now. Please try again in a moment.");
+    btn.disabled=false; btn.innerHTML='🔒 Reserve my seat';
+  }finally{ submitting=false; }
+}
+
+/* -------- Scroll depth + section views -------- */
+const depthFired = new Set();
+window.addEventListener('scroll', ()=>{
+  const p = Math.round((window.scrollY + innerHeight) / document.body.scrollHeight * 100);
+  [25,50,75,90].forEach(t=>{ if(p>=t && !depthFired.has(t)){ depthFired.add(t); trackC('ScrollDepth',{depth:t}); } });
+}, {passive:true});
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ trackC('SectionView',{section:e.target.id||e.target.className}); io.unobserve(e.target); } });
+},{threshold:.4});
+document.querySelectorAll('section').forEach(s=>io.observe(s));
+setTimeout(()=>trackC('TimeOnPage',{seconds:30}), 30000);
+setTimeout(()=>trackC('TimeOnPage',{seconds:60}), 60000);
+</script>
+
+</body>
+</html>
